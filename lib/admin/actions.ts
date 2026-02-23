@@ -47,3 +47,16 @@ export async function toggleUserRole(userId: string) {
     });
     revalidatePath("/admin");
 }
+
+export async function createProject(projectName: string, startDate: string, endDate: string) {
+    await checkAdmin();
+    const newProject = await prisma.project.create({
+        data: {
+            name: projectName,
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
+        },
+    });
+    revalidatePath("/admin/projects");
+    return newProject;
+}
